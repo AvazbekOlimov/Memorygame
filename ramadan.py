@@ -1,23 +1,20 @@
 
 import random
 from PyQt6 import QtCore, QtGui, QtWidgets
-ls = ['1.png','2.png','3.png','4.png','5.png','6.png','7.png','8.png','9.png']
+ls1 = ['1.png','2.png','3.png','4.png','5.png','6.png','7.png','8.png','9.png']
 score = 0
-ls1 = []
-def choising():
-     r = random.choice(ls)
-     if r not in ls1:
-          ls1.append(r)
-          return r
-     else:
-          choising()  
-for i in range(9):
-        choising()                  
+attamps = 5
+                
 print(ls1)
-hidden = ls1[random.randint(1,9)]
+
+
+class Strategy:
+     matrix = [[ls1[0],ls1[1],ls1[2]],[ls1[3],ls1[4],ls1[5]],[ls1[6],ls1[7],ls1[8]]]
 
 class Ui_MainWindow(object):
+
     def setupUi(self, MainWindow):
+        self.checks = []
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(840, 600)
         MainWindow.setMinimumSize(QtCore.QSize(840, 600))
@@ -119,6 +116,15 @@ class Ui_MainWindow(object):
         self.picture_9.setStyleSheet("border: 1px solid #967E76;\n"
 "background-color: #B7C4CF;")
         self.picture_9.setText("")
+        self.picture_1.setDisabled(True)
+        self.picture_2.setDisabled(True)
+        self.picture_3.setDisabled(True)
+        self.picture_4.setDisabled(True)
+        self.picture_5.setDisabled(True)
+        self.picture_6.setDisabled(True)
+        self.picture_7.setDisabled(True)
+        self.picture_8.setDisabled(True)
+        self.picture_9.setDisabled(True)
         icon8 = QtGui.QIcon()
         icon8.addPixmap(QtGui.QPixmap("img/9.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
         self.picture_9.setIcon(icon8)
@@ -156,6 +162,7 @@ class Ui_MainWindow(object):
 "background-color: #B7C4CF;")
         self.to_find.setText("")
         self.to_find.setIcon(icon8)
+        self.checks.append("9.png")
         self.to_find.setIconSize(QtCore.QSize(60, 60))
         self.to_find.setObjectName("to_find")
         self.score = QtWidgets.QLabel(parent=self.centralwidget)
@@ -209,10 +216,9 @@ class Ui_MainWindow(object):
         self.refresh_button.clicked.connect(self.refresh_sites)
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
-        if ls1[0] == hidden:             
-                self.picture_1.clicked.connect(self.open_card_1)
-                score += 1
-                self.score_num.setText(score)
+        
+
+        self.picture_1.clicked.connect(self.open_card_1)                
         self.picture_2.clicked.connect(self.open_card_2)
         self.picture_3.clicked.connect(self.open_card_3)
         self.picture_4.clicked.connect(self.open_card_4)
@@ -221,40 +227,170 @@ class Ui_MainWindow(object):
         self.picture_7.clicked.connect(self.open_card_7)
         self.picture_8.clicked.connect(self.open_card_8)
         self.picture_9.clicked.connect(self.open_card_9)
-    def open_card_1(self):         
-        self.picture_1.setIcon(QtGui.QIcon(f"img/{ls1[0]}"))
+
+    def atemp_zero(self):
+         if self.attamp_num.text()=='0':
+                self.picture_1.setDisabled(True)
+                self.picture_2.setDisabled(True)
+                self.picture_3.setDisabled(True)
+                self.picture_4.setDisabled(True)
+                self.picture_5.setDisabled(True)
+                self.picture_6.setDisabled(True)
+                self.picture_7.setDisabled(True)
+                self.picture_8.setDisabled(True)
+                self.picture_9.setDisabled(True)
+                self.refresh_button.setEnabled(True)
+                self.hide_and_show_button.setText("Hide")
+                icon1=QtGui.QIcon(f"img/{ls1[0]}")                
+                self.picture_1.setIcon(icon1)
+                icon2=QtGui.QIcon(f"img/{ls1[1]}")
+                self.picture_2.setIcon(icon2)
+                icon3=QtGui.QIcon(f"img/{ls1[2]}")
+                self.picture_3.setIcon(icon3)
+                icon4=QtGui.QIcon(f"img/{ls1[3]}")
+                self.picture_4.setIcon(icon4)
+                icon5=QtGui.QIcon(f"img/{ls1[4]}")
+                self.picture_5.setIcon(icon5)
+                icon6=QtGui.QIcon(f"img/{ls1[5]}")
+                self.picture_6.setIcon(icon6)
+                icon7=QtGui.QIcon(f"img/{ls1[6]}")
+                self.picture_7.setIcon(icon7)
+                icon8=QtGui.QIcon(f"img/{ls1[7]}")
+                self.picture_8.setIcon(icon8)
+                icon9=QtGui.QIcon(f"img/{ls1[8]}")
+                self.picture_9.setIcon(icon9)
+
+    def check_card(self):
+                # self.checks=self.checks[:-1]
+                print(self.checks)
+                if  self.checks[0]==self.checks[1]:        
+                        s = int(self.score_num.text())
+                        s+=1
+                        self.score_num.setText(f"{s}")
+                        self.checks=self.checks[:-1]
+                        hidden = ls1[random.randint(1,8)]
+                        icon = QtGui.QIcon(f"img/{hidden}")
+                        self.checks.append(hidden)
+                        self.to_find.setIcon(icon)
+                else:
+                        t = int(self.attamp_num.text())
+                        t-=1
+                        self.attamp_num.setText(f"{t}")
+                        
+                        self.checks=self.checks[:-1]
+                self.atemp_zero()
+    def open_card_1(self):
+        self.checks.append(ls1[0])
+        self.check_card()       
+        iconx = QtGui.QIcon(f"img/{ls1[0]}")
+        
+        self.picture_1.setIcon(iconx)
+        self.atemp_zero()
+        print(self.attamp_num.text())
     def open_card_2(self):         
-        self.picture_2.setIcon(QtGui.QIcon(f"img/{ls1[1]}"))
+        iconx = QtGui.QIcon(f"img/{ls1[1]}")
+        self.picture_2.setIcon(iconx)
+        self.checks.append(ls1[1])
+        self.check_card()
+        self.atemp_zero()
+        print(self.attamp_num.text())
     def open_card_3(self):         
-        self.picture_3.setIcon(QtGui.QIcon(f"img/{ls1[2]}"))
+        iconx = QtGui.QIcon(f"img/{ls1[2]}")
+        self.picture_3.setIcon(iconx)
+        self.checks.append(ls1[2])
+        self.check_card()
+        self.atemp_zero()
+        print(self.attamp_num.text())
     def open_card_4(self):         
-        self.picture_4.setIcon(QtGui.QIcon(f"img/{ls1[3]}"))
+        iconx = QtGui.QIcon(f"img/{ls1[3]}")
+        self.picture_4.setIcon(iconx)
+        self.checks.append(ls1[3])
+        self.check_card()
+        self.atemp_zero()
+        print(self.attamp_num.text())
     def open_card_5(self):         
-        self.picture_5.setIcon(QtGui.QIcon(f"img/{ls1[4]}"))  
+        iconx = QtGui.QIcon(f"img/{ls1[4]}")
+        self.picture_5.setIcon(iconx)  
+        self.checks.append(ls1[4])
+        self.check_card()
+        self.atemp_zero()
+        print(self.attamp_num.text())
     def open_card_6(self):         
-        self.picture_6.setIcon(QtGui.QIcon(f"img/{ls1[5]}"))                  
+        iconx = QtGui.QIcon(f"img/{ls1[5]}")
+        self.picture_6.setIcon(iconx) 
+        self.checks.append(ls1[5])
+        self.check_card()
+        self.atemp_zero()            
+        print(self.attamp_num.text())     
     def open_card_7(self):         
-        self.picture_7.setIcon(QtGui.QIcon(f"img/{ls1[6]}"))    
+        iconx = QtGui.QIcon(f"img/{ls1[6]}")
+        self.picture_7.setIcon(iconx)  
+        self.checks.append(ls1[6])
+        self.check_card()
+        self.atemp_zero() 
+        print(self.attamp_num.text())
     def open_card_8(self):         
-        self.picture_8.setIcon(QtGui.QIcon(f"img/{ls1[7]}"))    
+        iconx = QtGui.QIcon(f"img/{ls1[7]}")
+        self.picture_8.setIcon(iconx)   
+        self.checks.append(ls1[7])
+        self.check_card()
+        self.atemp_zero()
+        print(self.attamp_num.text())
     def open_card_9(self):         
-        self.picture_9.setIcon(QtGui.QIcon(f"img/{ls1[8]}")) 
+        iconx = QtGui.QIcon(f"img/{ls1[8]}")
+        self.picture_9.setIcon(iconx)  
+        self.checks.append(ls1[8])
+        self.check_card()
+        self.atemp_zero()
+        print(self.attamp_num.text())     
+        # print(self.picture_9.icon().themeName())
 
     def refresh_sites(self):        
         random.shuffle(ls1) 
-        self.picture_1.setIcon(QtGui.QIcon(f"img/{ls1[0]}"))
-        self.picture_2.setIcon(QtGui.QIcon(f"img/{ls1[1]}"))
-        self.picture_3.setIcon(QtGui.QIcon(f"img/{ls1[2]}"))
-        self.picture_4.setIcon(QtGui.QIcon(f"img/{ls1[3]}"))
-        self.picture_5.setIcon(QtGui.QIcon(f"img/{ls1[4]}"))
-        self.picture_6.setIcon(QtGui.QIcon(f"img/{ls1[5]}"))
-        self.picture_7.setIcon(QtGui.QIcon(f"img/{ls1[6]}"))
-        self.picture_8.setIcon(QtGui.QIcon(f"img/{ls1[7]}"))
-        self.picture_9.setIcon(QtGui.QIcon(f"img/{ls1[8]}"))
-        self.to_find.setIcon(QtGui.QIcon(f"img/{hidden}"))
+        icon1=QtGui.QIcon(f"img/{ls1[0]}")
+        self.picture_1.setIcon(icon1)
+
+        icon2=QtGui.QIcon(f"img/{ls1[1]}")
+        self.picture_2.setIcon(icon2)
+
+        icon3=QtGui.QIcon(f"img/{ls1[2]}")
+        self.picture_3.setIcon(icon3)
+
+        icon4=QtGui.QIcon(f"img/{ls1[3]}")
+        self.picture_4.setIcon(icon4)
+
+        icon5=QtGui.QIcon(f"img/{ls1[4]}")
+        self.picture_5.setIcon(icon5)
+
+        icon6=QtGui.QIcon(f"img/{ls1[5]}")
+        self.picture_6.setIcon(icon6)
+
+        icon7=QtGui.QIcon(f"img/{ls1[6]}")
+        self.picture_7.setIcon(icon7)
+
+        icon8=QtGui.QIcon(f"img/{ls1[7]}")
+        self.picture_8.setIcon(icon8)
+
+        icon9=QtGui.QIcon(f"img/{ls1[8]}")
+        self.picture_9.setIcon(icon9)
+        hidden = ls1[random.randint(1,8)]
+        icon = QtGui.QIcon(f"img/{hidden}")
+        self.checks.append(hidden)
+        self.to_find.setIcon(icon)
+        self.attamp_num.setText('5')
+        self.score_num.setText('0')
 
     def hide_pictures(self):
         if (self.hide_and_show_button.text() == 'Hide'):
+                self.picture_1.setDisabled(False)
+                self.picture_2.setDisabled(False)
+                self.picture_3.setDisabled(False)
+                self.picture_4.setDisabled(False)
+                self.picture_5.setDisabled(False)
+                self.picture_6.setDisabled(False)
+                self.picture_7.setDisabled(False)
+                self.picture_8.setDisabled(False)
+                self.picture_9.setDisabled(False)
                 
                 self.picture_1.setIcon(QtGui.QIcon('img/ramadan .png'))
                 self.picture_2.setIcon(QtGui.QIcon('img/ramadan .png'))
@@ -269,19 +405,41 @@ class Ui_MainWindow(object):
                 self.hide_and_show_button.setText('Show')
                 self.refresh_button.setDisabled(True)
         else:
-                random.shuffle(ls1)
-                self.to_find.setIcon(QtGui.QIcon(f"img/{hidden}"))
-                self.hide_and_show_button.setText("Hide")                     
-                self.picture_1.setIcon(QtGui.QIcon(f"img/{ls1[0]}"))
-                self.picture_2.setIcon(QtGui.QIcon(f"img/{ls1[1]}"))
-                self.picture_3.setIcon(QtGui.QIcon(f"img/{ls1[2]}"))
-                self.picture_4.setIcon(QtGui.QIcon(f"img/{ls1[3]}"))
-                self.picture_5.setIcon(QtGui.QIcon(f"img/{ls1[4]}"))
-                self.picture_6.setIcon(QtGui.QIcon(f"img/{ls1[5]}"))
-                self.picture_7.setIcon(QtGui.QIcon(f"img/{ls1[6]}"))
-                self.picture_8.setIcon(QtGui.QIcon(f"img/{ls1[7]}"))
-                self.picture_9.setIcon(QtGui.QIcon(f"img/{ls1[8]}"))
+                random.shuffle(ls1) 
+                icon1=QtGui.QIcon(f"img/{ls1[0]}")                
+                self.picture_1.setIcon(icon1)
+                icon2=QtGui.QIcon(f"img/{ls1[1]}")
+                self.picture_2.setIcon(icon2)
+                icon3=QtGui.QIcon(f"img/{ls1[2]}")
+                self.picture_3.setIcon(icon3)
+                icon4=QtGui.QIcon(f"img/{ls1[3]}")
+                self.picture_4.setIcon(icon4)
+                icon5=QtGui.QIcon(f"img/{ls1[4]}")
+                self.picture_5.setIcon(icon5)
+                icon6=QtGui.QIcon(f"img/{ls1[5]}")
+                self.picture_6.setIcon(icon6)
+                icon7=QtGui.QIcon(f"img/{ls1[6]}")
+                self.picture_7.setIcon(icon7)
+                icon8=QtGui.QIcon(f"img/{ls1[7]}")
+                self.picture_8.setIcon(icon8)
+                icon9=QtGui.QIcon(f"img/{ls1[8]}")
+                self.picture_9.setIcon(icon9)
+                hidden = ls1[random.randint(1,8)]
+                icon = QtGui.QIcon(f"img/{hidden}")
+                self.to_find.setIcon(icon)
+                self.checks.pop(0)
+                self.checks.insert(0,hidden)
+                self.hide_and_show_button.setText('Hide')
                 self.refresh_button.setDisabled(False)
+                self.picture_1.setDisabled(True)
+                self.picture_2.setDisabled(True)
+                self.picture_3.setDisabled(True)
+                self.picture_4.setDisabled(True)
+                self.picture_5.setDisabled(True)
+                self.picture_6.setDisabled(True)
+                self.picture_7.setDisabled(True)
+                self.picture_8.setDisabled(True)
+                self.picture_9.setDisabled(True)
             
 
     def retranslateUi(self, MainWindow):
@@ -290,7 +448,7 @@ class Ui_MainWindow(object):
         self.hide_and_show_button.setText(_translate("MainWindow", "Hide"))
         self.label.setText(_translate("MainWindow", "Game for Ramadan"))
         self.score.setText(_translate("MainWindow", "Score:"))
-        self.score_num.setText(_translate("MainWindow", f"{score}"))
+        self.score_num.setText(_translate("MainWindow", "0"))
         self.attamp.setText(_translate("MainWindow", "Attamps:"))
         self.attamp_num.setText(_translate("MainWindow", "5"))
 

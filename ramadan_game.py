@@ -4,7 +4,6 @@ import random
 ls = ['1.png','2.png','3.png','4.png','5.png','6.png','7.png','8.png','9.png']
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
-        
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(840, 600)
         MainWindow.setMinimumSize(QtCore.QSize(840, 600))
@@ -154,6 +153,7 @@ class Ui_MainWindow(object):
         self.refresh_button.clicked.connect(self.refresh_sites)
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
+        
     def refresh_sites(self):
         
         self.picture_1.setIcon(QtGui.QIcon(f"img/{random.choice(ls)}"))
@@ -194,7 +194,7 @@ class Ui_MainWindow(object):
              self.picture_9.setIcon(QtGui.QIcon(f"img/{random.choice(ls)}"))
              self.refresh_button.setDisabled(False)
         
-
+        
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
